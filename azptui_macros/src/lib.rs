@@ -23,12 +23,12 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         #vis #sig {
-            azptui::component::pre_hooks();
+            let __azptui__component_context = azptui::component::pre_hooks();
 
             fn assert_widget<T: ratatui::widgets::Widget>(t: T) -> T { t }
             let result = assert_widget((|| #block)());
 
-            azptui::component::post_hooks();
+            azptui::component::post_hooks(__azptui__component_context);
 
             result
         }

@@ -5,5 +5,3 @@ pub mod events;
 pub mod state;
 
 pub use azptui_macros::component;
-use crossterm::event::Event;
-use log::info;

@@ -1,5 +1,6 @@
-mod post;
-mod pre;
+mod context;
+mod pre_post;
 
-pub use post::post_hooks;
-pub use pre::pre_hooks;
+use context::ComponentContext;
+pub use pre_post::post_hooks;
+pub use pre_post::pre_hooks;
