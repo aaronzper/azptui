@@ -1,3 +1,4 @@
+use crossterm::event::{Event, KeyCode};
 use log::info;
 use ratatui::{
     Terminal,
@@ -46,9 +47,12 @@ fn main() {
     ratatui::run(|terminal| {
         loop {
             draw(terminal);
-            if crossterm::event::read().unwrap().is_key_press() {
-                return;
-            }
+            match crossterm::event::read().unwrap() {
+                Event::Key(key_e) if key_e.code == KeyCode::Char('q') => {
+                    return;
+                }
+                e => azptui::events::handle_event(e),
+            };
         }
     });
 }
