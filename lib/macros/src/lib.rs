@@ -24,8 +24,7 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
         #vis #sig {
             let __azptui__component_context = azptui::component::pre_render(::std::panic::Location::caller());
 
-            fn assert_widget<T: ratatui::widgets::Widget>(t: T) -> T { t }
-            let result = assert_widget((|| #block)());
+            let result = (|| #block)();
 
             azptui::component::post_render(__azptui__component_context);
 
