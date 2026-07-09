@@ -1,4 +1,4 @@
-use azptui_macros::use_counter;
+use azptui::use_counter;
 use ratatui::widgets::List;
 
 #[azptui::component]

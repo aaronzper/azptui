@@ -4,4 +4,4 @@ pub mod component;
 pub mod events;
 pub mod state;
 
-pub use azptui_macros::component;
+pub use azptui_macros::*;

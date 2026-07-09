@@ -59,6 +59,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "azptui_demo"
+version = "0.1.0"
+dependencies = [
+ "azptui",
+ "crossterm",
+ "log",
+ "ratatui",
+ "tui-logger",
+]
+
+[[package]]
 name = "azptui_macros"
 version = "0.1.0"
 dependencies = [
