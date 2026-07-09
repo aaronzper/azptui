@@ -1,18 +1,25 @@
+use log::warn;
+
+use crate::component::ComponentLocation;
 pub struct ComponentContext {
-    name: &'static str,
+    location: ComponentLocation,
     counter: usize,
 }
 
 impl ComponentContext {
-    pub fn new(name: &'static str) -> Self {
-        Self { name, counter: 0 }
+    pub fn new(location: ComponentLocation) -> Self {
+        Self {
+            location,
+            counter: 0,
+        }
     }
 
-    pub fn name(&self) -> &'static str {
-        self.name
+    pub fn location(&self) -> ComponentLocation {
+        self.location
     }
 
     pub fn counter(&self) -> usize {
+        warn!("COUNTER");
         self.counter
     }
 

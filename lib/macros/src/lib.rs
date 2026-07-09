@@ -19,11 +19,10 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let sig = &input_fn.sig;
     let block = &input_fn.block;
 
-    let fn_name = &sig.ident.to_string();
-
     let expanded = quote! {
+        #[track_caller]
         #vis #sig {
-            let __azptui__component_context = azptui::component::pre_hooks(#fn_name);
+            let __azptui__component_context = azptui::component::pre_hooks(::std::panic::Location::caller());
 
             fn assert_widget<T: ratatui::widgets::Widget>(t: T) -> T { t }
             let result = assert_widget((|| #block)());

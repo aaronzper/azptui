@@ -1,24 +1,31 @@
-use crate::{component::context::ComponentContext, state::STATE};
+use std::{cell::RefCell, collections::HashMap, panic::Location};
+
+use crate::component::{ComponentLocation, context::ComponentContext};
 use log::info;
 
-pub fn pre_hooks(name: &'static str) -> ComponentContext {
-    // TODO store this between renders
-    let mut context = ComponentContext::new(name);
+thread_local! {
+    static CONTEXTS: RefCell<HashMap<&'static Location<'static>, ComponentContext>> = RefCell::new(HashMap::new());
+}
 
-    let g_count = STATE.with_borrow_mut(|s| s.increment());
-    let c_count = context.increment();
+pub fn pre_hooks(location: ComponentLocation) -> ComponentContext {
+    let mut context = CONTEXTS.with_borrow_mut(|contexts| {
+        if let Some(c) = contexts.remove(location) {
+            c
+        } else {
+            ComponentContext::new(location)
+        }
+    });
 
-    info!("{}() PRE  | G: {}, C: {},", name, g_count, c_count);
+    info!("PRE  | Count: {},", context.increment());
     context
 }
 
 pub fn post_hooks(context: ComponentContext) {
-    let g_count = STATE.with_borrow(|s| s.counter());
+    info!("POST | Count: {},", context.counter());
 
-    info!(
-        "{}() POST | G: {}, C: {},",
-        context.name(),
-        g_count,
-        context.counter()
-    );
+    CONTEXTS.with_borrow_mut(|contexts| {
+        if contexts.insert(context.location(), context).is_some() {
+            unreachable!()
+        }
+    });
 }

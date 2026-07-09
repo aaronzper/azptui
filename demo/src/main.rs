@@ -14,7 +14,6 @@ use tui_logger::{TuiLoggerWidget, init_logger, set_default_level};
 mod components;
 
 fn draw<T: Backend>(t: &mut Terminal<T>) {
-    tui_logger::move_events();
     t.draw(|frame| {
         let layout = Layout::vertical([
             Constraint::Percentage(75),
@@ -22,6 +21,8 @@ fn draw<T: Backend>(t: &mut Terminal<T>) {
         ]);
         let [top, bottom] = layout.areas(frame.area());
         frame.render_widget(components::root(), top);
+
+        tui_logger::move_events();
         frame.render_widget(
             TuiLoggerWidget::default().block(
                 Block::bordered().title("Log").title_bottom(
