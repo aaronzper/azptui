@@ -7,7 +7,7 @@ thread_local! {
     static CONTEXTS: RefCell<HashMap<&'static Location<'static>, ComponentContext>> = RefCell::new(HashMap::new());
 }
 
-pub fn pre_hooks(location: ComponentLocation) -> ComponentContext {
+pub fn pre_render(location: ComponentLocation) -> ComponentContext {
     let mut context = CONTEXTS.with_borrow_mut(|contexts| {
         if let Some(c) = contexts.remove(location) {
             c
@@ -20,7 +20,7 @@ pub fn pre_hooks(location: ComponentLocation) -> ComponentContext {
     context
 }
 
-pub fn post_hooks(context: ComponentContext) {
+pub fn post_render(context: ComponentContext) {
     info!("POST | Count: {},", context.counter());
 
     CONTEXTS.with_borrow_mut(|contexts| {

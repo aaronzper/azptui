@@ -1,9 +1,9 @@
 mod context;
-mod pre_post;
+mod lifecycle;
 
 use std::panic::Location;
 
-pub use pre_post::post_hooks;
-pub use pre_post::pre_hooks;
+pub use lifecycle::post_render;
+pub use lifecycle::pre_render;
 
 pub type ComponentLocation = &'static Location<'static>;
