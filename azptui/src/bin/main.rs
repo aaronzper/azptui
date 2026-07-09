@@ -1,4 +1,3 @@
-use azptui::hello;
 use log::info;
 use ratatui::{
     Terminal,
@@ -10,6 +9,9 @@ use ratatui::{
 };
 use tui_logger::{TuiLoggerWidget, init_logger, set_default_level};
 
+/// Custom components created and used by the Demo
+mod components;
+
 fn draw<T: Backend>(t: &mut Terminal<T>) {
     tui_logger::move_events();
     t.draw(|frame| {
@@ -18,7 +20,7 @@ fn draw<T: Backend>(t: &mut Terminal<T>) {
             Constraint::Percentage(25),
         ]);
         let [top, bottom] = layout.areas(frame.area());
-        frame.render_widget(hello(), top);
+        frame.render_widget(components::root(), top);
         frame.render_widget(
             TuiLoggerWidget::default().block(
                 Block::bordered().title("Log").title_bottom(

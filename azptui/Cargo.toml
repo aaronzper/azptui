@@ -1,0 +1,19 @@
+[package]
+name = "azptui"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "azptui"
+path = "src/lib/mod.rs"
+
+[[bin]]
+name = "azptui_demo"
+path = "src/bin/main.rs"
+
+[dependencies]
+azptui_macros = { path = "../azptui_macros" }
+crossterm = "0.29.0"
+log = "0.4.33"
+ratatui = "0.30.2"
+tui-logger = { version = "0.18.3", features = ["crossterm"] }
