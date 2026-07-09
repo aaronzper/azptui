@@ -19,11 +19,11 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let sig = &input_fn.sig;
     let block = &input_fn.block;
 
-    let _fn_name = &sig.ident;
+    let fn_name = &sig.ident.to_string();
 
     let expanded = quote! {
         #vis #sig {
-            let __azptui__component_context = azptui::component::pre_hooks();
+            let __azptui__component_context = azptui::component::pre_hooks(#fn_name);
 
             fn assert_widget<T: ratatui::widgets::Widget>(t: T) -> T { t }
             let result = assert_widget((|| #block)());
@@ -35,4 +35,9 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     };
 
     expanded.into()
+}
+
+#[proc_macro]
+pub fn use_counter(_input: TokenStream) -> TokenStream {
+    quote! { __azptui__component_context.counter() }.into()
 }
