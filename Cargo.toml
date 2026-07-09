@@ -12,3 +12,5 @@ name = "azptui_demo"
 path = "src/bin/main.rs"
 
 [dependencies]
+crossterm = "0.29.0"
+ratatui = "0.30.2"

@@ -1,3 +1,3 @@
-pub fn hello() {
-    println!("Hello from azptui");
+pub fn hello() -> &'static str {
+    "Hello from azptui"
 }
