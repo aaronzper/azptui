@@ -1,4 +1,3 @@
-use crossterm::event::{Event, KeyCode};
 use log::info;
 use ratatui::{
     Terminal,
@@ -18,7 +17,7 @@ fn draw<T: Backend>(t: &mut Terminal<T>) {
         ]);
         let [top, bottom] = layout.areas(frame.area());
 
-        frame.render_widget(components::root(), top);
+        frame.render_widget(components::calculator(), top);
         frame.render_widget(components::logger(), bottom);
     })
     .unwrap();
