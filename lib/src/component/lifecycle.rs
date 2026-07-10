@@ -16,13 +16,11 @@ pub fn pre_render(location: ComponentLocation) -> ComponentContext {
         }
     });
 
-    info!("PRE  | Count: {},", context.increment());
+    context.increment();
     context
 }
 
 pub fn post_render(context: ComponentContext) {
-    info!("POST | Count: {},", context.counter());
-
     CONTEXTS.with_borrow_mut(|contexts| {
         if contexts.insert(context.location(), context).is_some() {
             unreachable!()

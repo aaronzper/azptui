@@ -1,4 +1,6 @@
-use azptui::use_counter;
+use azptui::{on_event, use_counter};
+use crossterm::event::Event;
+use log::info;
 use ratatui::widgets::List;
 
 #[azptui::component]
@@ -18,5 +20,13 @@ pub fn root() -> List<'static> {
 #[azptui::component]
 pub fn sub() -> String {
     let counter = use_counter!();
+
+    on_event!(|e: &Event| { e.is_key() }, |e: Event| {
+        info!(
+            "Got key {}. Get event handled!",
+            e.as_key_event().unwrap().code
+        )
+    });
+
     format!("--> I am a sub-component 😎 : {}", counter)
 }

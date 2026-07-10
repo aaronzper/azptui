@@ -41,7 +41,7 @@ fn draw<T: Backend>(t: &mut Terminal<T>) {
 
 fn main() {
     init_logger(log::LevelFilter::Trace).unwrap();
-    set_default_level(log::LevelFilter::Trace);
+    set_default_level(log::LevelFilter::Debug);
 
     info!("azptui Demo Started");
 
