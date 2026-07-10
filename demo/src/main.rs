@@ -17,8 +17,8 @@ fn draw<T: Backend>(t: &mut Terminal<T>) {
             Constraint::Percentage(25),
         ]);
         let [top, bottom] = layout.areas(frame.area());
-        frame.render_widget(components::root(), top);
 
+        frame.render_widget(components::root(), top);
         frame.render_widget(components::logger(), bottom);
     })
     .unwrap();
@@ -33,12 +33,7 @@ fn main() {
     ratatui::run(|terminal| {
         loop {
             draw(terminal);
-            match crossterm::event::read().unwrap() {
-                Event::Key(key_e) if key_e.code == KeyCode::Char('q') => {
-                    return;
-                }
-                e => azptui::events::handle_event(e),
-            };
+            azptui::events::handle_event(crossterm::event::read().unwrap());
         }
     });
 }
