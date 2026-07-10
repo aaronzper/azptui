@@ -4,11 +4,8 @@ use ratatui::{
     Terminal,
     backend::Backend,
     layout::{Constraint, Layout},
-    style::Stylize,
-    text::Line,
-    widgets::Block,
 };
-use tui_logger::{TuiLoggerWidget, init_logger, set_default_level};
+use tui_logger::{init_logger, set_default_level};
 
 /// Custom components created and used by the Demo
 mod components;
@@ -22,19 +19,7 @@ fn draw<T: Backend>(t: &mut Terminal<T>) {
         let [top, bottom] = layout.areas(frame.area());
         frame.render_widget(components::root(), top);
 
-        tui_logger::move_events();
-        frame.render_widget(
-            TuiLoggerWidget::default().block(
-                Block::bordered().title("Log").title_bottom(
-                    Line::from(
-                        "Everything outside this box rendered via AZPTUI! B\"SD",
-                    )
-                    .centered()
-                    .italic(),
-                ),
-            ),
-            bottom,
-        );
+        frame.render_widget(components::logger(), bottom);
     })
     .unwrap();
 }
