@@ -41,7 +41,7 @@ impl ComponentContext {
         handler: H,
     ) where
         F: Fn(&Event) -> bool + 'static,
-        H: Fn(Event) -> () + 'static,
+        H: Fn(&Event) -> () + 'static,
     {
         if self.event_handlers.contains_key(&loc) {
             return;

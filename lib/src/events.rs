@@ -12,14 +12,14 @@ thread_local! {
 
 pub struct EventHandler {
     filter: Box<dyn Fn(&Event) -> bool>,
-    handler: Box<dyn Fn(Event) -> ()>,
+    handler: Box<dyn Fn(&Event) -> ()>,
 }
 
 impl EventHandler {
     pub fn register<F, H>(filter: F, handler: H) -> Rc<Self>
     where
         F: Fn(&Event) -> bool + 'static,
-        H: Fn(Event) -> () + 'static,
+        H: Fn(&Event) -> () + 'static,
     {
         let handler = Self {
             filter: Box::new(filter),
@@ -40,17 +40,15 @@ pub fn handle_event(event: Event) {
         while i < handlers.len() {
             match handlers[i].upgrade() {
                 Some(h) if (h.filter)(&event) => {
-                    (h.handler)(event);
-                    return;
-                }
-                Some(_) => {
-                    i += 1;
+                    (h.handler)(&event);
                 }
                 None => {
                     handlers.remove(i);
+                    continue;
                 }
-            }
+                _ => (),
+            };
+            i += 1;
         }
-        info!("Got nothin");
     })
 }
