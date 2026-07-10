@@ -16,7 +16,6 @@ pub fn pre_render(location: ComponentLocation) -> ComponentContext {
         }
     });
 
-    context.increment();
     context
 }
 
