@@ -3,6 +3,7 @@ mod data;
 mod lifecycle;
 
 use crate::component::data::ComponentData;
+pub use lifecycle::cleanup;
 pub use lifecycle::post_render;
 pub use lifecycle::pre_render;
 use std::collections::HashSet;

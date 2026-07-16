@@ -1,8 +1,6 @@
-use log::info;
-
 use crate::component::{
     COMPONENTS, ComponentLocation, RENDERED, context::RenderContext,
-    data::ComponentData, hash_location,
+    data::ComponentData,
 };
 
 pub fn pre_render(location: ComponentLocation) -> RenderContext {
@@ -14,13 +12,11 @@ pub fn pre_render(location: ComponentLocation) -> RenderContext {
         }
     });
 
-    let is_root = RENDERED.with_borrow_mut(|r| {
-        let empty = r.is_empty();
+    RENDERED.with_borrow_mut(|r| {
         r.insert(location);
-        empty
     });
 
-    RenderContext { data, is_root }
+    RenderContext { data }
 }
 
 pub fn post_render(context: RenderContext) {
@@ -30,8 +26,13 @@ pub fn post_render(context: RenderContext) {
             unreachable!()
         }
     });
+}
 
-    if context.is_root {
-        RENDERED.with_borrow_mut(|r| r.clear());
-    }
+pub fn cleanup() {
+    RENDERED.with_borrow_mut(|r| {
+        COMPONENTS.with_borrow_mut(|components| {
+            components.retain(|loc, _| r.contains(loc));
+        });
+        r.clear();
+    });
 }

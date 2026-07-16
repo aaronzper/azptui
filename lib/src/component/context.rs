@@ -6,7 +6,6 @@ use crossterm::event::Event;
 
 pub struct RenderContext {
     pub data: ComponentData,
-    pub is_root: bool,
 }
 
 impl RenderContext {

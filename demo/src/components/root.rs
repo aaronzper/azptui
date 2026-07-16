@@ -28,21 +28,21 @@ pub fn root() -> List<'static> {
         }
     );
 
-    let old = sub();
+    let persist = sub();
 
     let list = if !entered {
         [
             "Press enter to reset the top sub-component (by spawning a new one)...".
                 to_string(),
-            old.clone(),
-            old,
+            sub(),
+            persist,
             typed,
         ]
     } else {
         [
             "Good boy. Press Esc to exit.".to_string(),
             sub(),
-            old,
+            persist,
             typed,
         ]
     };

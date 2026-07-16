@@ -22,6 +22,8 @@ fn draw<T: Backend>(t: &mut Terminal<T>) {
         frame.render_widget(components::logger(), bottom);
     })
     .unwrap();
+
+    azptui::component::cleanup();
 }
 
 fn main() {
