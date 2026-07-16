@@ -1,4 +1,4 @@
-use crossterm::event::{Event, KeyCode};
+use azptui::component::{get_components, hash_location};
 use log::info;
 use ratatui::{
     Terminal,
@@ -32,6 +32,13 @@ fn main() {
 
     ratatui::run(|terminal| {
         loop {
+            let comps = get_components();
+            let hashes: Vec<String> = comps
+                .iter()
+                .map(|x| format!("{:04X}", hash_location(x.location())))
+                .collect();
+            info!("Last render had {} components: {:?}", comps.len(), hashes);
+
             draw(terminal);
             azptui::events::handle_event(crossterm::event::read().unwrap());
         }

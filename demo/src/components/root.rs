@@ -1,6 +1,5 @@
-use azptui::{on_event, use_counter, use_state};
-use crossterm::event::{Event, KeyCode};
-use log::info;
+use azptui::{on_event, use_state};
+use crossterm::event::KeyCode;
 use ratatui::widgets::List;
 
 #[azptui::component]
@@ -32,7 +31,13 @@ pub fn root() -> List<'static> {
     let old = sub();
 
     let list = if !entered {
-        ["Press enter to reset the top sub-component (by spawning a new one)...".to_string(), old.clone(), old, typed]
+        [
+            "Press enter to reset the top sub-component (by spawning a new one)...".
+                to_string(),
+            old.clone(),
+            old,
+            typed,
+        ]
     } else {
         [
             "Good boy. Press Esc to exit.".to_string(),

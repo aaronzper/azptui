@@ -37,11 +37,6 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
 }
 
 #[proc_macro]
-pub fn use_counter(_: TokenStream) -> TokenStream {
-    quote! { __azptui__component_context.counter() }.into()
-}
-
-#[proc_macro]
 #[track_caller]
 pub fn use_state(input: TokenStream) -> TokenStream {
     let args = parse_macro_input!(input with Punctuated::<Expr, Token![,]>::parse_terminated);

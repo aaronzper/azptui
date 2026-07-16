@@ -2,6 +2,7 @@ use std::{
     any::Any,
     cell::{Cell, RefCell},
     collections::HashMap,
+    hash::{DefaultHasher, Hash, Hasher},
     ops::DerefMut,
     rc::Rc,
 };
@@ -9,6 +10,7 @@ use std::{
 use crate::{component::ComponentLocation, events::EventHandler};
 use crossterm::event::Event;
 
+#[derive(Clone)]
 pub struct ComponentContext {
     dirty: Rc<Cell<bool>>,
     state: HashMap<ComponentLocation, Rc<RefCell<dyn Any>>>,
