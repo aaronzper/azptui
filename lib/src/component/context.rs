@@ -4,12 +4,12 @@ use crate::component::{ComponentLocation, data::ComponentData};
 use crate::events::EventHandler;
 use crossterm::event::Event;
 
-pub struct ComponentContext {
+pub struct RenderContext {
     pub data: ComponentData,
     pub is_root: bool,
 }
 
-impl ComponentContext {
+impl RenderContext {
     pub fn use_state<T>(
         &mut self,
         loc: ComponentLocation,

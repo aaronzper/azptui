@@ -22,12 +22,12 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let expanded = quote! {
         #[track_caller]
         #vis #sig {
-            let mut __azptui__component_context =
+            let mut __azptui__render_context =
                 azptui::component::pre_render(::std::panic::Location::caller());
 
             let result = (|| #block)();
 
-            azptui::component::post_render(__azptui__component_context);
+            azptui::component::post_render(__azptui__render_context);
 
             result
         }
@@ -40,7 +40,7 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
 #[track_caller]
 pub fn use_state(input: TokenStream) -> TokenStream {
     let args = parse_macro_input!(input with Punctuated::<Expr, Token![,]>::parse_terminated);
-    quote! { __azptui__component_context.use_state(
+    quote! { __azptui__render_context.use_state(
         ::std::panic::Location::caller(),
         #args)
     }
@@ -51,7 +51,7 @@ pub fn use_state(input: TokenStream) -> TokenStream {
 #[track_caller]
 pub fn on_event(input: TokenStream) -> TokenStream {
     let args = parse_macro_input!(input with Punctuated::<Expr, Token![,]>::parse_terminated);
-    quote! { __azptui__component_context.register_handler(
+    quote! { __azptui__render_context.register_handler(
         ::std::panic::Location::caller(),
         #args)
     }
