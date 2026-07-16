@@ -1,41 +1,15 @@
-use std::{
-    any::Any,
-    cell::{Cell, RefCell},
-    collections::HashMap,
-    hash::{DefaultHasher, Hash, Hasher},
-    ops::DerefMut,
-    rc::Rc,
-};
+use std::{any::Any, rc::Rc};
 
-use crate::{component::ComponentLocation, events::EventHandler};
+use crate::component::{ComponentLocation, data::ComponentData};
+use crate::events::EventHandler;
 use crossterm::event::Event;
 
-#[derive(Clone)]
 pub struct ComponentContext {
-    dirty: Rc<Cell<bool>>,
-    state: HashMap<ComponentLocation, Rc<RefCell<dyn Any>>>,
-    event_handlers: HashMap<ComponentLocation, Rc<EventHandler>>,
-    location: ComponentLocation,
+    pub data: ComponentData,
+    pub is_root: bool,
 }
 
 impl ComponentContext {
-    pub fn new(location: ComponentLocation) -> Self {
-        Self {
-            dirty: Rc::new(Cell::new(true)),
-            state: HashMap::new(),
-            event_handlers: HashMap::new(),
-            location,
-        }
-    }
-
-    pub fn location(&self) -> ComponentLocation {
-        self.location
-    }
-
-    pub fn dirty(&self) -> bool {
-        self.dirty.get()
-    }
-
     pub fn use_state<T>(
         &mut self,
         loc: ComponentLocation,
@@ -44,14 +18,15 @@ impl ComponentContext {
     where
         T: Any + Clone,
     {
-        let state = self.state.entry(loc).or_insert_with(|| {
-            Rc::new(RefCell::new(initial_val)) as Rc<RefCell<dyn Any>>
+        let state = self.data.state.entry(loc).or_insert_with(|| {
+            Rc::new(std::cell::RefCell::new(initial_val))
+                as Rc<std::cell::RefCell<dyn Any>>
         });
 
         let rc = Rc::clone(state);
         let rc_setter = Rc::clone(&rc);
 
-        let dirty_setter = Rc::clone(&self.dirty);
+        let dirty_setter = Rc::clone(&self.data.dirty);
 
         let value = rc.borrow().downcast_ref::<T>().unwrap().clone();
         let setter = move |new_val| {
@@ -71,6 +46,6 @@ impl ComponentContext {
         H: Fn(&Event) -> () + 'static,
     {
         let h = EventHandler::register(filter, handler);
-        self.event_handlers.insert(loc, h);
+        self.data.event_handlers.insert(loc, h);
     }
 }

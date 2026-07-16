@@ -35,7 +35,7 @@ fn main() {
             let comps = get_components();
             let hashes: Vec<String> = comps
                 .iter()
-                .map(|x| format!("{:04X}", hash_location(x.location())))
+                .map(|x| format!("{:04X}", hash_location(x.location()) as u16))
                 .collect();
             info!("Last render had {} components: {:?}", comps.len(), hashes);
 
